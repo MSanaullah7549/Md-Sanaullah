@@ -1,0 +1,993 @@
+ <!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Digital Studio</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0a0f;
+      --surface-color: #14141f;
+      --text-color: #e8e6f0;
+      --primary-color: #c4f542;
+      --secondary-color: #6366f1;
+    }
+
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4, h5, h6, .nav-link, .btn {
+      font-family: 'Syne', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-custom {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(196, 245, 66, 0.08);
+      transition: all 0.4s ease;
+    }
+    .navbar-custom .navbar-brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      letter-spacing: -0.5px;
+    }
+    .navbar-custom .nav-link {
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem !important;
+      transition: color 0.3s;
+    }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .nav-link.active {
+      color: var(--primary-color);
+    }
+    .navbar-toggler { border-color: rgba(196, 245, 66, 0.3); }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(196,245,66,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* Hero */
+    .hero-section {
+      position: relative;
+      padding: 10rem 0 6rem;
+      overflow: hidden;
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -40%; left: -20%;
+      width: 80%; height: 120%;
+      background: radial-gradient(ellipse, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; right: -10%;
+      width: 60%; height: 80%;
+      background: radial-gradient(ellipse, rgba(196, 245, 66, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(196, 245, 66, 0.08);
+      border: 1px solid rgba(196, 245, 66, 0.2);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+    .hero-title {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--primary-color), #a3d935);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: rgba(232, 230, 240, 0.6);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .btn-primary-custom {
+      background: var(--primary-color);
+      color: var(--bg-color);
+      font-weight: 700;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+    .btn-primary-custom:hover {
+      background: #d4ff52;
+      color: var(--bg-color);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(196, 245, 66, 0.25);
+    }
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--text-color);
+      font-weight: 600;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      border: 1.5px solid rgba(232, 230, 240, 0.2);
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+    .btn-outline-custom:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      padding: 3rem 0;
+      border-top: 1px solid rgba(232, 230, 240, 0.06);
+      border-bottom: 1px solid rgba(232, 230, 240, 0.06);
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(232, 230, 240, 0.45);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 0.4rem;
+    }
+
+    /* Section styles */
+    .section-padding { padding: 6rem 0; }
+    .section-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--secondary-color);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: rgba(232, 230, 240, 0.5);
+      max-width: 550px;
+      line-height: 1.7;
+    }
+
+    /* Service Cards */
+    .service-card {
+      background: var(--surface-color);
+      border: 1px solid rgba(232, 230, 240, 0.06);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      transition: all 0.4s ease;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(196, 245, 66, 0.15);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .service-icon {
+      width: 56px; height: 56px;
+      background: rgba(196, 245, 66, 0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+    }
+    .service-card h4 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .service-card p {
+      color: rgba(232, 230, 240, 0.5);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    /* Portfolio */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .portfolio-item {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+    }
+    .portfolio-item .portfolio-bg {
+      width: 100%; height: 100%;
+      transition: transform 0.5s ease;
+    }
+    .portfolio-item:hover .portfolio-bg { transform: scale(1.05); }
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10, 10, 15, 0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-overlay h5 { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.3rem; }
+    .portfolio-overlay span { font-size: 0.8rem; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; }
+    .portfolio-filter-btn {
+      background: transparent;
+      border: 1px solid rgba(232, 230, 240, 0.12);
+      color: var(--text-color);
+      padding: 0.5rem 1.3rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .portfolio-filter-btn:hover, .portfolio-filter-btn.active {
+      background: var(--primary-color);
+      color: var(--bg-color);
+      border-color: var(--primary-color);
+    }
+
+    /* Testimonials */
+    .testimonial-card {
+      background: var(--surface-color);
+      border: 1px solid rgba(232, 230, 240, 0.06);
+      border-radius: 20px;
+      padding: 2.5rem;
+      height: 100%;
+    }
+    .testimonial-card .stars { color: #fbbf24; margin-bottom: 1rem; font-size: 1.1rem; }
+    .testimonial-card blockquote {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(232, 230, 240, 0.7);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .testimonial-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      font-family: 'Syne', sans-serif;
+    }
+    .testimonial-author h6 { font-weight: 700; margin: 0; font-size: 0.95rem; }
+    .testimonial-author small { color: rgba(232, 230, 240, 0.4); font-size: 0.8rem; }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, var(--secondary-color), #4f46e5);
+      border-radius: 28px;
+      padding: 5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -20%;
+      width: 60%; height: 150%;
+      background: radial-gradient(ellipse, rgba(196, 245, 66, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: #fff;
+      position: relative;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,0.7);
+      max-width: 500px;
+      margin: 1rem auto 2rem;
+      position: relative;
+    }
+    .btn-cta {
+      background: var(--primary-color);
+      color: var(--bg-color);
+      font-weight: 700;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .btn-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(196, 245, 66, 0.3);
+      background: #d4ff52;
+      color: var(--bg-color);
+    }
+
+    /* Footer */
+    .footer-section {
+      border-top: 1px solid rgba(232, 230, 240, 0.06);
+      padding: 4rem 0 2rem;
+    }
+    .footer-section a {
+      color: rgba(232, 230, 240, 0.5);
+      text-decoration: none;
+      transition: color 0.3s;
+      font-size: 0.9rem;
+    }
+    .footer-section a:hover { color: var(--primary-color); }
+    .footer-brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--primary-color);
+    }
+    .footer-social a {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(232, 230, 240, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      transition: all 0.3s;
+    }
+    .footer-social a:hover {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: var(--bg-color);
+    }
+
+    /* Animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+
+    /* Counter animation */
+    @keyframes count-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      z-index: 9999;
+      transition: width 0.1s;
+    }
+
+    /* Back to top */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 44px; height: 44px;
+      background: var(--primary-color);
+      color: var(--bg-color);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+      z-index: 999;
+    }
+    .back-to-top.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(196, 245, 66, 0.3);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-wrapper" id="appWrapper"><!-- Scroll Progress -->
+   <div class="scroll-indicator" id="scrollIndicator"></div><!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-custom fixed-top" role="navigation">
+    <div class="container"><a class="navbar-brand" href="#hero">APEX<span style="color: var(--text-color)">.</span></a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+     <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+       <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
+       <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+       <li class="nav-item"><a class="nav-link" href="#portfolio">Work</a></li>
+       <li class="nav-item"><a class="nav-link" href="#testimonials">Reviews</a></li>
+       <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+     </div>
+    </div>
+   </nav><!-- Hero -->
+   <header class="hero-section" id="hero">
+    <div class="container">
+     <div class="row align-items-center">
+      <div class="col-lg-8">
+       <div class="hero-badge fade-up">
+        <span class="dot"></span> Available for Projects
+       </div>
+       <h1 class="hero-title fade-up stagger-1" id="heroTitle">We Build <span class="accent">Digital</span> Experiences That Matter</h1>
+       <p class="hero-subtitle fade-up stagger-2" id="heroSubtitle">Award-winning studio crafting bold brands, immersive websites, and scalable digital products for ambitious companies worldwide.</p>
+       <div class="d-flex gap-3 flex-wrap fade-up stagger-3"><a href="#portfolio" class="btn btn-primary-custom">View Our Work</a> <a href="#contact" class="btn btn-outline-custom">Get In Touch</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header><!-- Stats -->
+   <section class="stats-strip">
+    <div class="container">
+     <div class="row g-4">
+      <div class="col-6 col-md-3 stat-item fade-up">
+       <div class="stat-number" data-count="150">
+        0
+       </div>
+       <div class="stat-label">
+        Projects Delivered
+       </div>
+      </div>
+      <div class="col-6 col-md-3 stat-item fade-up stagger-1">
+       <div class="stat-number" data-count="98">
+        0
+       </div>
+       <div class="stat-label">
+        Client Satisfaction %
+       </div>
+      </div>
+      <div class="col-6 col-md-3 stat-item fade-up stagger-2">
+       <div class="stat-number" data-count="12">
+        0
+       </div>
+       <div class="stat-label">
+        Industry Awards
+       </div>
+      </div>
+      <div class="col-6 col-md-3 stat-item fade-up stagger-3">
+       <div class="stat-number" data-count="8">
+        0
+       </div>
+       <div class="stat-label">
+        Years Experience
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Services -->
+   <section class="section-padding" id="services">
+    <div class="container">
+     <div class="text-center mb-5">
+      <div class="section-tag fade-up">
+       What We Do
+      </div>
+      <h2 class="section-title fade-up stagger-1" id="servicesHeading">Services That Drive Growth</h2>
+      <p class="section-desc mx-auto fade-up stagger-2">We blend creativity with technology to deliver solutions that transform businesses and captivate audiences.</p>
+     </div>
+     <div class="row g-4">
+      <div class="col-md-6 col-lg-4 fade-up stagger-1">
+       <div class="service-card">
+        <div class="service-icon">
+         <i data-lucide="palette" style="width:26px;height:26px"></i>
+        </div>
+        <h4>Brand Identity</h4>
+        <p>Complete visual identity systems including logos, typography, color palettes, and comprehensive brand guidelines.</p>
+       </div>
+      </div>
+      <div class="col-md-6 col-lg-4 fade-up stagger-2">
+       <div class="service-card">
+        <div class="service-icon">
+         <i data-lucide="code-2" style="width:26px;height:26px"></i>
+        </div>
+        <h4>Web Development</h4>
+        <p>Custom-built, high-performance websites and web applications using cutting-edge frameworks and technologies.</p>
+       </div>
+      </div>
+      <div class="col-md-6 col-lg-4 fade-up stagger-3">
+       <div class="service-card">
+        <div class="service-icon">
+         <i data-lucide="smartphone" style="width:26px;height:26px"></i>
+        </div>
+        <h4>Mobile Apps</h4>
+        <p>Native and cross-platform mobile applications designed for seamless user experience and peak performance.</p>
+       </div>
+      </div>
+      <div class="col-md-6 col-lg-4 fade-up stagger-1">
+       <div class="service-card">
+        <div class="service-icon">
+         <i data-lucide="figma" style="width:26px;height:26px"></i>
+        </div>
+        <h4>UI/UX Design</h4>
+        <p>Research-driven interface design and user experience strategy that delights users and drives conversions.</p>
+       </div>
+      </div>
+      <div class="col-md-6 col-lg-4 fade-up stagger-2">
+       <div class="service-card">
+        <div class="service-icon">
+         <i data-lucide="trending-up" style="width:26px;height:26px"></i>
+        </div>
+        <h4>Digital Marketing</h4>
+        <p>Data-driven marketing campaigns, SEO optimization, and growth strategies that deliver measurable results.</p>
+       </div>
+      </div>
+      <div class="col-md-6 col-lg-4 fade-up stagger-3">
+       <div class="service-card">
+        <div class="service-icon">
+         <i data-lucide="shield" style="width:26px;height:26px"></i>
+        </div>
+        <h4>Cloud &amp; DevOps</h4>
+        <p>Scalable cloud infrastructure, CI/CD pipelines, and robust security architectures for enterprise applications.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Portfolio -->
+   <section class="section-padding" id="portfolio" style="background: rgba(20, 20, 31, 0.5);">
+    <div class="container">
+     <div class="text-center mb-4">
+      <div class="section-tag fade-up">
+       Our Work
+      </div>
+      <h2 class="section-title fade-up stagger-1" id="portfolioHeading">Selected Projects</h2>
+     </div>
+     <div class="d-flex justify-content-center gap-2 flex-wrap mb-5 fade-up stagger-2"><button class="portfolio-filter-btn active" data-filter="all">All</button> <button class="portfolio-filter-btn" data-filter="web">Web</button> <button class="portfolio-filter-btn" data-filter="brand">Brand</button> <button class="portfolio-filter-btn" data-filter="app">App</button>
+     </div>
+     <div class="portfolio-grid" id="portfolioGrid">
+      <div class="portfolio-item fade-up stagger-1" data-category="web">
+       <div class="portfolio-bg" style="background: linear-gradient(135deg, #1a1a2e, #16213e); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <svg width="80" height="80" viewbox="0 0 80 80">
+         <rect x="10" y="15" width="60" height="40" rx="4" fill="none" stroke="#c4f542" stroke-width="2" /><line x1="10" y1="25" x2="70" y2="25" stroke="#c4f542" stroke-width="1.5" /><circle cx="17" cy="20" r="2" fill="#ff6b6b" /><circle cx="24" cy="20" r="2" fill="#fbbf24" /><circle cx="31" cy="20" r="2" fill="#34d399" /><rect x="16" y="31" width="20" height="3" rx="1" fill="#6366f1" opacity="0.7" /><rect x="16" y="38" width="35" height="2" rx="1" fill="#c4f542" opacity="0.3" /><rect x="16" y="44" width="28" height="2" rx="1" fill="#c4f542" opacity="0.3" /><line x1="25" y1="55" x2="55" y2="55" stroke="#c4f542" stroke-width="1.5" /><rect x="35" y="55" width="10" height="7" rx="0" fill="none" stroke="#c4f542" stroke-width="1.5" />
+        </svg>
+       </div>
+       <div class="portfolio-overlay">
+        <span>Web Design</span>
+        <h5>Nexus SaaS Platform</h5>
+       </div>
+      </div>
+      <div class="portfolio-item fade-up stagger-2" data-category="brand">
+       <div class="portfolio-bg" style="background: linear-gradient(135deg, #1e1e30, #2d1b69); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <svg width="80" height="80" viewbox="0 0 80 80">
+         <polygon points="40,8 72,60 8,60" fill="none" stroke="#c4f542" stroke-width="2.5" /><circle cx="40" cy="42" r="12" fill="none" stroke="#6366f1" stroke-width="2" /><circle cx="40" cy="42" r="4" fill="#c4f542" />
+        </svg>
+       </div>
+       <div class="portfolio-overlay">
+        <span>Brand Identity</span>
+        <h5>Prism Labs Rebrand</h5>
+       </div>
+      </div>
+      <div class="portfolio-item fade-up stagger-3" data-category="app">
+       <div class="portfolio-bg" style="background: linear-gradient(135deg, #0f2027, #203a43); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <svg width="60" height="80" viewbox="0 0 60 80">
+         <rect x="8" y="5" width="44" height="70" rx="8" fill="none" stroke="#c4f542" stroke-width="2" /><rect x="14" y="18" width="32" height="38" rx="3" fill="#6366f1" opacity="0.2" /><circle cx="30" cy="67" r="3" fill="none" stroke="#c4f542" stroke-width="1.5" /><rect x="22" y="10" width="16" height="3" rx="1.5" fill="#c4f542" opacity="0.4" /><rect x="18" y="24" width="24" height="5" rx="2" fill="#c4f542" opacity="0.3" /><rect x="18" y="33" width="16" height="3" rx="1" fill="#c4f542" opacity="0.2" /><rect x="18" y="40" width="20" height="3" rx="1" fill="#c4f542" opacity="0.2" />
+        </svg>
+       </div>
+       <div class="portfolio-overlay">
+        <span>Mobile App</span>
+        <h5>FinTrack Finance App</h5>
+       </div>
+      </div>
+      <div class="portfolio-item fade-up stagger-1" data-category="web">
+       <div class="portfolio-bg" style="background: linear-gradient(135deg, #1a0a2e, #2d1b4e); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <svg width="80" height="80" viewbox="0 0 80 80">
+         <rect x="5" y="20" width="70" height="45" rx="6" fill="none" stroke="#c4f542" stroke-width="2" /><rect x="12" y="28" width="25" height="30" rx="3" fill="#6366f1" opacity="0.25" /><rect x="42" y="28" width="26" height="12" rx="3" fill="#c4f542" opacity="0.15" /><rect x="42" y="45" width="26" height="13" rx="3" fill="#c4f542" opacity="0.15" />
+        </svg>
+       </div>
+       <div class="portfolio-overlay">
+        <span>Web Development</span>
+        <h5>Horizon E-Commerce</h5>
+       </div>
+      </div>
+      <div class="portfolio-item fade-up stagger-2" data-category="brand">
+       <div class="portfolio-bg" style="background: linear-gradient(135deg, #1a2a1a, #0a2a2a); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <svg width="80" height="80" viewbox="0 0 80 80">
+         <circle cx="40" cy="40" r="28" fill="none" stroke="#c4f542" stroke-width="2" /><path d="M28 40 Q40 20 52 40 Q40 60 28 40Z" fill="none" stroke="#6366f1" stroke-width="2" /><circle cx="40" cy="40" r="6" fill="#c4f542" opacity="0.5" />
+        </svg>
+       </div>
+       <div class="portfolio-overlay">
+        <span>Brand Identity</span>
+        <h5>Verde Organic Co.</h5>
+       </div>
+      </div>
+      <div class="portfolio-item fade-up stagger-3" data-category="app">
+       <div class="portfolio-bg" style="background: linear-gradient(135deg, #2a1a0a, #1a1a2e); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <svg width="80" height="80" viewbox="0 0 80 80">
+         <rect x="10" y="10" width="25" height="25" rx="5" fill="none" stroke="#c4f542" stroke-width="2" /><rect x="45" y="10" width="25" height="25" rx="5" fill="none" stroke="#6366f1" stroke-width="2" /><rect x="10" y="45" width="25" height="25" rx="5" fill="none" stroke="#6366f1" stroke-width="2" /><rect x="45" y="45" width="25" height="25" rx="5" fill="none" stroke="#c4f542" stroke-width="2" />
+        </svg>
+       </div>
+       <div class="portfolio-overlay">
+        <span>App Design</span>
+        <h5>GridFlow Dashboard</h5>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Testimonials -->
+   <section class="section-padding" id="testimonials">
+    <div class="container">
+     <div class="text-center mb-5">
+      <div class="section-tag fade-up">
+       Testimonials
+      </div>
+      <h2 class="section-title fade-up stagger-1">What Clients Say</h2>
+     </div>
+     <div class="row g-4">
+      <div class="col-md-4 fade-up stagger-1">
+       <div class="testimonial-card">
+        <div class="stars">
+         ★★★★★
+        </div>
+        <blockquote>
+         "Apex completely transformed our digital presence. The attention to detail and creative vision exceeded all expectations."
+        </blockquote>
+        <div class="testimonial-author">
+         <div class="testimonial-avatar" style="background: linear-gradient(135deg, #c4f542, #a3d935); color: #0a0a0f;">
+          SK
+         </div>
+         <div>
+          <h6>Sarah Kim</h6><small>CEO, Nexus Tech</small>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="col-md-4 fade-up stagger-2">
+       <div class="testimonial-card">
+        <div class="stars">
+         ★★★★★
+        </div>
+        <blockquote>
+         "Their development team is phenomenal. They delivered a complex platform on time with incredible quality and performance."
+        </blockquote>
+        <div class="testimonial-author">
+         <div class="testimonial-avatar" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff;">
+          MR
+         </div>
+         <div>
+          <h6>Marco Rossi</h6><small>CTO, Prism Labs</small>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="col-md-4 fade-up stagger-3">
+       <div class="testimonial-card">
+        <div class="stars">
+         ★★★★★
+        </div>
+        <blockquote>
+         "Working with Apex felt like having an in-house team. Responsive, creative, and deeply invested in our success."
+        </blockquote>
+        <div class="testimonial-author">
+         <div class="testimonial-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #0a0a0f;">
+          AT
+         </div>
+         <div>
+          <h6>Aisha Thompson</h6><small>Founder, Verde Co.</small>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA -->
+   <section class="section-padding" id="contact">
+    <div class="container">
+     <div class="cta-section fade-up">
+      <h2 id="ctaHeading">Let's Create Something Extraordinary</h2>
+      <p>Ready to elevate your digital presence? Let's talk about your next project and make it unforgettable.</p><a href="mailto:hello@apexstudio.com" class="btn btn-cta" target="_blank" rel="noopener noreferrer">Start a Project</a>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="footer-section" role="contentinfo">
+    <div class="container">
+     <div class="row g-4 mb-4">
+      <div class="col-lg-4">
+       <div class="footer-brand mb-3">
+        APEX<span style="color: var(--text-color)">.</span>
+       </div>
+       <p style="color: rgba(232, 230, 240, 0.4); font-size: 0.9rem; line-height: 1.7; max-width: 300px;">Crafting digital experiences that inspire, engage, and drive measurable results for ambitious brands.</p>
+      </div>
+      <div class="col-6 col-lg-2">
+       <h6 class="mb-3" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Services</h6>
+       <ul class="list-unstyled" style="display:flex;flex-direction:column;gap:0.5rem;">
+        <li><a href="#services">Web Development</a></li>
+        <li><a href="#services">Brand Identity</a></li>
+        <li><a href="#services">Mobile Apps</a></li>
+        <li><a href="#services">UI/UX Design</a></li>
+       </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+       <h6 class="mb-3" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Company</h6>
+       <ul class="list-unstyled" style="display:flex;flex-direction:column;gap:0.5rem;">
+        <li><a href="#hero">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+       </ul>
+      </div>
+      <div class="col-lg-4">
+       <h6 class="mb-3" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Connect</h6>
+       <div class="footer-social d-flex gap-2"><a href="#" aria-label="Twitter"><i data-lucide="twitter" style="width:18px;height:18px"></i></a> <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:18px;height:18px"></i></a> <a href="#" aria-label="GitHub"><i data-lucide="github" style="width:18px;height:18px"></i></a> <a href="#" aria-label="Instagram"><i data-lucide="instagram" style="width:18px;height:18px"></i></a>
+       </div>
+      </div>
+     </div>
+     <hr style="border-color: rgba(232, 230, 240, 0.06);">
+     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2"><small style="color: rgba(232, 230, 240, 0.3);">© 2024 Apex Digital Studio. All rights reserved.</small> <small style="color: rgba(232, 230, 240, 0.3);">Made with <span style="color: var(--primary-color)">♥</span></small>
+     </div>
+    </div>
+   </footer><!-- Back to top --> <button class="back-to-top" id="backToTop" aria-label="Back to top"> <i data-lucide="chevron-up" style="width:20px;height:20px"></i> </button>
+  </div>
+  <script>
+    // Default config
+    const defaultConfig = {
+      background_color: '#0a0a0f',
+      surface_color: '#14141f',
+      text_color: '#e8e6f0',
+      primary_color: '#c4f542',
+      secondary_color: '#6366f1',
+      font_family: 'Syne',
+      font_size: 16,
+      hero_title: 'We Build <span class="accent">Digital</span> Experiences That Matter',
+      hero_subtitle: 'Award-winning studio crafting bold brands, immersive websites, and scalable digital products for ambitious companies worldwide.',
+      services_heading: 'Services That Drive Growth',
+      portfolio_heading: 'Selected Projects',
+      cta_heading: "Let's Create Something Extraordinary"
+    };
+
+    function applyConfig(config) {
+      const root = document.documentElement.style;
+      root.setProperty('--bg-color', config.background_color || defaultConfig.background_color);
+      root.setProperty('--surface-color', config.surface_color || defaultConfig.surface_color);
+      root.setProperty('--text-color', config.text_color || defaultConfig.text_color);
+      root.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
+      root.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
+
+      const font = config.font_family || defaultConfig.font_family;
+      const baseSize = config.font_size || defaultConfig.font_size;
+
+      document.querySelectorAll('h1,h2,h3,h4,h5,h6,.nav-link,.btn,.navbar-brand,.footer-brand,.hero-badge,.stat-number,.portfolio-filter-btn').forEach(el => {
+        el.style.fontFamily = `${font}, sans-serif`;
+      });
+      document.body.style.fontFamily = `'DM Sans', ${font}, sans-serif`;
+      document.body.style.fontSize = `${baseSize}px`;
+
+      const heroTitle = document.getElementById('heroTitle');
+      if (heroTitle) heroTitle.innerHTML = config.hero_title || defaultConfig.hero_title;
+
+      const heroSub = document.getElementById('heroSubtitle');
+      if (heroSub) heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+
+      const servH = document.getElementById('servicesHeading');
+      if (servH) servH.textContent = config.services_heading || defaultConfig.services_heading;
+
+      const portH = document.getElementById('portfolioHeading');
+      if (portH) portH.textContent = config.portfolio_heading || defaultConfig.portfolio_heading;
+
+      const ctaH = document.getElementById('ctaHeading');
+      if (ctaH) ctaH.textContent = config.cta_heading || defaultConfig.cta_heading;
+    }
+
+    // Init Element SDK
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => { applyConfig(config); },
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+          { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['services_heading', config.services_heading || defaultConfig.services_heading],
+        ['portfolio_heading', config.portfolio_heading || defaultConfig.portfolio_heading],
+        ['cta_heading', config.cta_heading || defaultConfig.cta_heading]
+      ])
+    });
+
+    // Scroll animations
+    const wrapper = document.getElementById('appWrapper');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1, root: wrapper });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Scroll progress + back to top
+    const scrollInd = document.getElementById('scrollIndicator');
+    const backBtn = document.getElementById('backToTop');
+
+    wrapper.addEventListener('scroll', () => {
+      const scrollTop = wrapper.scrollTop;
+      const scrollHeight = wrapper.scrollHeight - wrapper.clientHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      scrollInd.style.width = progress + '%';
+      backBtn.classList.toggle('show', scrollTop > 400);
+    });
+
+    backBtn.addEventListener('click', () => { wrapper.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+    // Smooth nav scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile nav
+          const collapse = document.getElementById('navMenu');
+          if (collapse.classList.contains('show')) {
+            bootstrap.Collapse.getOrCreateInstance(collapse).hide();
+          }
+        }
+      });
+    });
+
+    // Counter animation
+    function animateCounters() {
+      document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count);
+        let current = 0;
+        const increment = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) { current = target; clearInterval(timer); }
+          el.textContent = current + (target === 98 ? '%' : '+');
+        }, 40);
+      });
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animateCounters(); statsObserver.disconnect(); }
+      });
+    }, { threshold: 0.3, root: wrapper });
+    statsObserver.observe(document.querySelector('.stats-strip'));
+
+    // Portfolio filter
+    document.querySelectorAll('.portfolio-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.portfolio-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.portfolio-item').forEach(item => {
+          if (filter === 'all' || item.dataset.category === filter) {
+            item.style.display = '';
+            item.style.animation = 'count-up 0.4s ease forwards';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Active nav highlight on scroll
+    const sections = document.querySelectorAll('section[id], header[id]');
+    wrapper.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (wrapper.scrollTop >= s.offsetTop - 200) current = s.getAttribute('id');
+      });
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    });
+
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9fc9e571c4d635bb',t:'MTc3ODkyOTQxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
